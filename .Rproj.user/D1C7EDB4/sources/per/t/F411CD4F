@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1617663250608.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1953423134",
+    "id" : "F411CD4F",
+    "lastKnownWriteTime" : 1617663411,
+    "last_content_update" : 1617663411176,
+    "path" : "~/Desktop/Masters Program/Econ 523 Lab/Blog Post github .Rmd",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "7,35",
+        "scrollLine" : "0",
+        "source_window_id" : ""
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

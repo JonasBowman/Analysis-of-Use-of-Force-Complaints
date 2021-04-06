@@ -1,0 +1,2 @@
+"0","Force%>%filter(year_received>=""2000"",mos_age_incident<=""40"")%>%"
+"0","  ggplot(aes(x=mos_age_incident))+geom_bar(aes(fill=catracemos))+theme_minimal(base_size = 12)+ggtitle(""Number of Complaints by Officer Age"")+ylab(""Numebr of Complaints"")+xlab(""Officer Age"")+scale_fill_brewer(palette = ""Set1"")+labs(fill=""Officer Race"")"

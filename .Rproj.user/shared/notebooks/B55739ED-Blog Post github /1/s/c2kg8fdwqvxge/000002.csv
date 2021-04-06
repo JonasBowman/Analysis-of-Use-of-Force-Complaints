@@ -1,0 +1,2 @@
+"0","Force%>%filter(year_received>=""2000"",catracemos!=""NA"")%>%group_by(catracemos)%>%"
+"0","  ggplot(aes(x=year_received,color=catracemos))+geom_line(stat=""count"")+xlab(""Year Complaint was Received"")+ylab(""Number of Complaints"")+labs(color=""Race and Ethnicity"")+ggtitle(""Yearly Use of Force Complaints by Officer Race and Ethnicity"")+theme_minimal(base_size = 12)+scale_color_brewer(palette = ""Set1"")"

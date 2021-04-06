@@ -1,0 +1,27 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1617669727493.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1898502017",
+    "id" : "FE4708B2",
+    "lastKnownWriteTime" : 1617669842,
+    "last_content_update" : 1617669842653,
+    "path" : "~/Desktop/Masters Program/Econ 523 Lab/Analysis-of-Use-of-Force-Complaints/nypd analysis .Rmd",
+    "project_path" : "nypd analysis .Rmd",
+    "properties" : {
+        "cursorPosition" : "132,0",
+        "last_setup_crc32" : "C1AC5F3070443654",
+        "scrollLine" : "122",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

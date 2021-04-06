@@ -1,0 +1,62 @@
+"0","knitr::opts_chunk$set(echo = FALSE)"
+"0",""
+"0","library(pacman)"
+"0","p_load(tidyverse,dplyr,broom,stargazer,ggplot2)"
+"0",""
+"0","CCPB<- read_csv(""allegations_202007271729.csv"")"
+"2","
+[36m──[39m [1m[1mColumn specification[1m[22m [36m─────────────────────────────────────────────────────────────────[39m
+cols(
+  .default = col_character(),
+  unique_mos_id = [32mcol_double()[39m,
+  shield_no = [32mcol_double()[39m,
+  complaint_id = [32mcol_double()[39m,
+  month_received = [32mcol_double()[39m,
+  year_received = [32mcol_double()[39m,
+  month_closed = [32mcol_double()[39m,
+  year_closed = [32mcol_double()[39m,
+  mos_age_incident = [32mcol_double()[39m,
+  complainant_age_incident = [32mcol_double()[39m,
+  precinct = [32mcol_double()[39m
+)
+[36mℹ[39m Use [38;5;251m[48;5;235m[38;5;251m[48;5;235m`spec()`[48;5;235m[38;5;251m[49m[39m for the full column specifications.
+
+"
+"0","CCPB<- CCPB%>%mutate(catrace=""Other"")        "
+"0","CCPB<- CCPB%>%mutate(catrace=(if_else(complainant_ethnicity==""Black"",""Black"",catrace)))"
+"0","CCPB<- CCPB%>%mutate(catrace=(if_else (complainant_ethnicity == ""Hispanic"",""Hispanic"",catrace)))"
+"0","CCPB<- CCPB%>%mutate(catrace=(if_else(CCPB$complainant_ethnicity== ""White"",""White"",catrace)))"
+"0",""
+"0","Force<-CCPB%>%filter(fado_type==""Force"")"
+"0",""
+"0","Force<- Force%>%mutate(catgender=""Other"")                      "
+"0",""
+"0","Force<- Force%>%mutate(catgender=(if_else(complainant_gender==""Male"",""Male"",catgender)))"
+"0","Force<- Force%>%mutate(catgender=(if_else(complainant_gender==""Female"",""Female"",catgender)))"
+"0",""
+"0","Force<- Force%>%mutate(catracemos=""Other"")                      "
+"0",""
+"0","Force<- Force%>%mutate(catracemos=(if_else(mos_ethnicity==""Black"",""Black"",catracemos)))"
+"0","Force<- Force%>%mutate(catracemos=(if_else(mos_ethnicity==""Hispanic"",""Hispanic"",catracemos)))"
+"0","Force<- Force%>%mutate(catracemos=(if_else(mos_ethnicity==""White"",""White"",catracemos)))"
+"0",""
+"0","Force<- Force%>%mutate(catracegender=""Other"")  "
+"0",""
+"0","Force<- Force%>%mutate(catracegender=(if_else(complainant_ethnicity==""Black""&complainant_gender==""Male"",""Black Male"",catracegender)))"
+"0","Force<- Force%>%mutate(catracegender=(if_else(complainant_ethnicity==""Black""&complainant_gender==""Female"",""Black Female"",catracegender)))"
+"0","Force<- Force%>%mutate(catracegender=(if_else(complainant_ethnicity==""Hispanic""&complainant_gender==""Male"",""Hispanic Male"",catracegender)))"
+"0","Force<- Force%>%mutate(catracegender=(if_else(complainant_ethnicity==""Hispanic""&complainant_gender==""Female"",""Hispanic Female"",catracegender)))"
+"0","Force<- Force%>%mutate(catracegender=(if_else(complainant_ethnicity==""White""&complainant_gender==""Male"",""White Male"",catracegender)))"
+"0","Force<- Force%>%mutate(catracegender=(if_else(complainant_ethnicity==""White""&complainant_gender==""Female"",""White Female"",catracegender)))"
+"0",""
+"0","nycensus<-read_csv(""newyorkrace.csv"")"
+"2","Missing column names filled in: 'X3' [3]"
+"2","
+[36m──[39m [1m[1mColumn specification[1m[22m [36m─────────────────────────────────────────────────────────────────[39m
+cols(
+  Race = [31mcol_character()[39m,
+  Percentage = [31mcol_character()[39m,
+  X3 = [33mcol_logical()[39m
+)
+
+"

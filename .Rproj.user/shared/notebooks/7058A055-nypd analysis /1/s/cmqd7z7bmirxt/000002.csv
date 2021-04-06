@@ -1,0 +1,2 @@
+"0",""
+"0","nycensus%>%filter(Race!=""N/A"",Percentage!=""N/A)"")%>%ggplot(aes(x=Race,y=Percentage,fill=Race))+geom_col()+theme_minimal(base_size = 12)+ylab(""Percentage of Population"")+xlab(""Race and Ethnicity"")+ggtitle(""Racial Demographics of New York City"")+labs(subtitle = ""New York Census Data"",fill =""Race and Ethnicity"")+labs(color=""Race and Ethnicity"")+scale_fill_brewer(palette = ""Set1"")"

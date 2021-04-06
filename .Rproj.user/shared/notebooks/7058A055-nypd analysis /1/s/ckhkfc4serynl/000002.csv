@@ -1,0 +1,3 @@
+"0",""
+"0","Force%>%filter(year_received>=""2000"",catrace!=""NA"")%>%"
+"0","  ggplot(aes(x=complainant_age_incident))+geom_histogram(aes(fill=catrace),binwidth = 3)+ggtitle(""Number of Complaints by Complainant Age"")+theme_minimal(base_size = 12)+xlab(""Complainant Age"")+ylab(""Number of Complaints"")+scale_fill_brewer(palette = ""Set1"")+labs(fill=""Complainant Race"")"

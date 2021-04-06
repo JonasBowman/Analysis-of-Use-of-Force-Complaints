@@ -1,0 +1,132 @@
+---
+title: "nypd analysis"
+author: "Jonas Bowman"
+date: "4/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(pacman)
+p_load(tidyverse,dplyr,broom,stargazer,ggplot2)
+
+CCPB<- read_csv("allegations_202007271729.csv")
+
+CCPB<- CCPB%>%mutate(catrace="Other")        
+CCPB<- CCPB%>%mutate(catrace=(if_else(complainant_ethnicity=="Black","Black",catrace)))
+CCPB<- CCPB%>%mutate(catrace=(if_else (complainant_ethnicity == "Hispanic","Hispanic",catrace)))
+CCPB<- CCPB%>%mutate(catrace=(if_else(CCPB$complainant_ethnicity== "White","White",catrace)))
+
+Force<-CCPB%>%filter(fado_type=="Force")
+
+Force<- Force%>%mutate(catgender="Other")                      
+
+Force<- Force%>%mutate(catgender=(if_else(complainant_gender=="Male","Male",catgender)))
+Force<- Force%>%mutate(catgender=(if_else(complainant_gender=="Female","Female",catgender)))
+
+Force<- Force%>%mutate(catracemos="Other")                      
+
+Force<- Force%>%mutate(catracemos=(if_else(mos_ethnicity=="Black","Black",catracemos)))
+Force<- Force%>%mutate(catracemos=(if_else(mos_ethnicity=="Hispanic","Hispanic",catracemos)))
+Force<- Force%>%mutate(catracemos=(if_else(mos_ethnicity=="White","White",catracemos)))
+
+Force<- Force%>%mutate(catracegender="Other")  
+
+Force<- Force%>%mutate(catracegender=(if_else(complainant_ethnicity=="Black"&complainant_gender=="Male","Black Male",catracegender)))
+Force<- Force%>%mutate(catracegender=(if_else(complainant_ethnicity=="Black"&complainant_gender=="Female","Black Female",catracegender)))
+Force<- Force%>%mutate(catracegender=(if_else(complainant_ethnicity=="Hispanic"&complainant_gender=="Male","Hispanic Male",catracegender)))
+Force<- Force%>%mutate(catracegender=(if_else(complainant_ethnicity=="Hispanic"&complainant_gender=="Female","Hispanic Female",catracegender)))
+Force<- Force%>%mutate(catracegender=(if_else(complainant_ethnicity=="White"&complainant_gender=="Male","White Male",catracegender)))
+Force<- Force%>%mutate(catracegender=(if_else(complainant_ethnicity=="White"&complainant_gender=="Female","White Female",catracegender)))
+
+nycensus<-read_csv("newyorkrace.csv")
+```
+
+## Analysis of Civilian Complaint Review Board Data, Published by ProPublica.
+
+ProPublica used a FOIA request to acquire this data, detailing nearly 12,000 complaints against approximately 4,000 New York Police Department (NYPD) officers. According to Data is Plural, the data was collected by the Civilian Complaint Review Board which was created after a change in a New York law overturned the shielding of records of instances of excessive force from public view. The data includes descriptive statistics regarding the identities of both the officers and those filing complaints. After a year when systemic racism in policing has received increased scrutiny, I wanted to examine this data and see if there was evidence of racial discrimination. One factor that is important to note before delving into the data is the racial and ethnic breakdown of New York City. The most important thing to note is that according to 2019 Census data Whites make up the largest majority of the city's population. As we see in this first graph.
+## Population Breakdown
+
+
+```{r graph1, echo=FALSE, warning=FALSE}
+
+nycensus%>%filter(Race!="N/A",Percentage!="N/A)")%>%ggplot(aes(x=Race,y=Percentage,fill=Race))+geom_col()+theme_minimal(base_size = 12)+ylab("Percentage of Population")+xlab("Race and Ethnicity")+ggtitle("Racial Demographics of New York City")+labs(subtitle = "New York Census Data",fill ="Race and Ethnicity")+labs(color="Race and Ethnicity")+scale_fill_brewer(palette = "Set1")
+
+
+```
+
+
+
+
+
+
+As shown in the first figure, White people make up the majority of New York City's population. With this in mind I then started by filtering the data for use of force complaints. I did this because of the immense amount of public debate which seems to be centered around use of force, in particular, the chokehold and the use of firearms. Then because men appear more frequently in the data as complainants than women, I separated the two groups for clarity.
+
+```{r graph 1, echo= FALSE }
+
+Force%>%filter(year_received>="2000",catracegender!="NA",catgender=="Male")%>%group_by(catracegender)%>%
+  ggplot(aes(x=year_received,color=catracegender))+geom_line(stat="count")+
+  theme_minimal(base_size = 12)+ylab("Number of Complaints")+xlab("Year Complaint was Received")+ggtitle("Yearly Use of Force Complaints by Race and Ethnicity")+labs(color="Race and Ethnicity")+scale_color_brewer(palette = "Set1")
+
+```
+
+
+## Men
+
+The first graph looks at the amount of complaints received each year. It shows that there are many more use of force complaints from Black men then by any other racial or ethnic group. Immediately we see Black men are overrepresented in the data given their share of New York City's population. Meanwhile White men seem to be underrepresented. While the number of complaints is trending downward in 2019, this is due to both the Coronavirus Pandemic and a plan to overhaul the complaint system rather than any change in policing behavior.
+
+
+```{r pressure, echo=FALSE}
+
+Force%>%filter(year_received>="2000",catracegender!="NA",catgender=="Female")%>%group_by(catracegender)%>%
+  ggplot(aes(x=year_received,color=catracegender))+geom_line(stat="count")+
+  theme_minimal(base_size = 12)+ylab("Number of Complaints")+xlab("Year Complaint was Received")+ggtitle("Yearly Use of Force Complaints by Race and Ethnicity")+labs(color="Race and Ethnicity")+scale_color_brewer(palette = "Set1")
+                                                                                                                                                                                                                 
+```
+
+
+## Women
+The trend in the first graph is echoed by the second which shows that Black women have filed many more complaints against the NYPD for use of force complaints than any other racial or ethnic category of women. We also see that the White population continues to be underrepresented. It is quite troubling that both Black men and Black women have filed so many complaints against the NYPD and yet it does not appear that there has been any systematic effort by the NYPD to address the obvious racial bias in their policing.
+
+```{r, out.width="10 in",echo=FALSE }
+Force%>%filter(year_received>="2000",catracemos!="NA")%>%group_by(catracemos)%>%
+  ggplot(aes(x=year_received,color=catracemos))+geom_line(stat="count")+xlab("Year Complaint was Received")+ylab("Number of Complaints")+labs(color="Race and Ethnicity")+ggtitle("Yearly Use of Force Complaints by Officer Race and Ethnicity")+theme_minimal(base_size = 12)+scale_color_brewer(palette = "Set1")
+
+
+```
+
+
+## Officers
+When looking at the officers who are having complaints filed against them, we see that White officers are consistently receiving the most complaints about use of force. I excluded gender in this graph because most of the officers are men. While White officers do make up approximately 53% of the NYPD, there are some years where they receive nearly double the amount of complaints of Hispanic Officers who make up around 30% of the force. This data shows that White officers are more likely to have complaints about use of force filed against them especially by people of color.
+
+
+```{r, echo=FALSE }
+Force%>%filter(year_received>="2000",mos_age_incident<="40")%>%
+  ggplot(aes(x=mos_age_incident))+geom_bar(aes(fill=catracemos))+theme_minimal(base_size = 12)+ggtitle("Number of Complaints by Officer Age")+ylab("Numebr of Complaints")+xlab("Officer Age")+scale_fill_brewer(palette = "Set1")+labs(fill="Officer Race")
+
+
+
+
+```
+
+
+## Officer Age
+When we account for the age of police officers in the dataset it appears that younger officers, especially White officers 30 years and younger, are receiving the most complaints about use of force. This result may be due to the idea that as officer's age increases, they are probably promoted.
+
+
+```{r,warning=FALSE,echo=FALSE}
+
+Force%>%filter(year_received>="2000",catrace!="NA")%>%
+  ggplot(aes(x=complainant_age_incident))+geom_histogram(aes(fill=catrace),binwidth = 3)+ggtitle("Number of Complaints by Complainant Age")+theme_minimal(base_size = 12)+xlab("Complainant Age")+ylab("Number of Complaints")+scale_fill_brewer(palette = "Set1")+labs(fill="Complainant Race")
+
+
+```
+
+
+## Complainant Age
+
+When examining the age of complainants, it becomes immediately clear that younger People of Color are much more likely to file complaints about excessive use of force from police officers. This graph seems to confirm the idea that there is an especially large problem with how police officers treat younger People of Color, especially Black youth. 
+
+## Conclusion
+In sum this data seems to show a pattern of excessive use of force by the NYPD that has gone years without being addressed. People of Color, in particular black men and women seem to be overrepresented in this data, suggesting the profound existence of systemic racism in the New York Police Department. An area for future research is the presence of repeatedly offending officers who clearly have a history of abusing their authority and were not fired or criminally charged for their actions. According to Data is Plural, after the release of this data the NYPD pledged to get an independent review board to review its disciplinary program.

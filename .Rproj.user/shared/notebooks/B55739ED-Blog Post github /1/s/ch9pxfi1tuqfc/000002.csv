@@ -1,0 +1,4 @@
+"0",""
+"0","Force%>%filter(year_received>=""2000"",catracegender!=""NA"",catgender==""Female"")%>%group_by(catracegender)%>%"
+"0","  ggplot(aes(x=year_received,color=catracegender))+geom_line(stat=""count"")+"
+"0","  theme_minimal(base_size = 12)+ylab(""Number of Complaints"")+xlab(""Year Complaint was Received"")+ggtitle(""Yearly Use of Force Complaints by Race and Ethnicity"")+labs(color=""Race and Ethnicity"")+scale_color_brewer(palette = ""Set1"")"
